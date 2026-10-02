@@ -1,0 +1,92 @@
+# ═══════════════════════════════════════════════════════════════
+#  purpur.yml — Purpur-specific extensions
+#
+#  Purpur adds knobs Paper does not, several of which are directly
+#  useful for performance. Only those are set here; the gameplay
+#  toggles are left at vanilla behaviour deliberately, because a
+#  performance preset should not silently change how the game plays.
+# ═══════════════════════════════════════════════════════════════
+
+config-version: 34
+
+settings:
+  use-alternate-keepalive: true
+  disable-give-dropping: false
+
+  logger:
+    suppress-init-legacy-material-errors: true
+    suppress-ignored-advancement-warnings: true
+
+  messages:
+    cannot-ride-mob: '<red>You cannot ride that.</red>'
+
+  blast-resistance-update-interval: 0
+
+  broadcasts:
+    disable-with-lang-key: false
+
+  lagging-threshold: 19.0
+
+world-settings:
+  default:
+    gameplay-mechanics:
+      # Ender pearls landing in unloaded chunks otherwise force a
+      # synchronous chunk load on the main thread.
+      player:
+        teleport-if-outside-border: true
+        idle-timeout:
+          kick-if-idle: false
+          # Idle players still tick their chunks. Disabling AI for
+          # their surroundings recovers that cost without kicking.
+          mobs-dont-target-idle-player: true
+          tick-nearby-entities: false
+          update-tab-list: false
+
+      projectile-offset: 0.0
+      disable-method-profiler: true
+
+      entities-can-use-portals: true
+      entities-pick-up-loot-bypass-mob-griefing: false
+
+      use-better-mending: false
+      milk-cures-bad-omen: true
+
+      boat:
+        eject-players-on-land: false
+
+    mobs:
+      # Villagers are the most expensive common mob: brain ticks plus
+      # POI lookups. Lobotomising stuck ones is a large, safe win on
+      # trading-hall servers.
+      villager:
+        lobotomize:
+          enabled: true
+          check-interval: 100
+          wait-until-trade-locked: false
+        brain-ticks: 2
+        search-radius:
+          acquire-poi: 32
+          nearest-bed-sensor: 16
+          secondary-poi-sensor: 32
+
+      zombie:
+        aggressive-towards-villager-when-lagging: false
+
+      creeper:
+        allow-griefing: true
+
+    tick-rates:
+      behavior-villager: 2
+      sensor-villager-nearestbedsensor: 160
+
+    blocks:
+      # Dispensers scanning for entities every tick is wasteful in
+      # large farms.
+      dispenser:
+        apply-cursed-to-armor-slots: true
+
+      beacon:
+        effect-range: -1
+
+      sponge:
+        absorption-area: 65
