@@ -1,0 +1,5 @@
+*.jar
+logs/
+cache/
+world*/
+.DS_Store
